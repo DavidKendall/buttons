@@ -1,6 +1,6 @@
 /*
- * @brief A program for the EA NXP LPC4088QSB to flash LED1, LED2, LED3 and LED4 if the
- *        user push button is not pressed.
+ * @brief A program for the EA NXP LPC4088QSB to flash LED1, LED2, LED3 and LED4.
+ *        Flashing is turned on/off by the push button.
  * @author David Kendall
  * @date July 2015
  */
@@ -8,8 +8,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <LPC407x_8x_177x_8x.h>
-
-
 
 #define LED1PIN    (1UL << 18)
 #define LED2PIN    (1UL << 13)
@@ -23,6 +21,8 @@ void ledsToggle(void);
 void delay(uint32_t ms);
 
 int main() {
+	bool flashing = false;
+	
 	LPC_IOCON->P1_18 = 0;
 	LPC_IOCON->P0_13 = 0x80; // Ensure digital mode is selected for type 'A' pin
 	LPC_IOCON->P1_13 = 0;
@@ -35,10 +35,16 @@ int main() {
 	LPC_GPIO2->DIR &= ~BUTTON;
 	
 	while (true) {
-		if (!buttonPressed()) {
-		  ledsToggle();
+		if (buttonPressed()) {
+			while (buttonPressed()) {
+				/* skip */
+			}
+		  flashing = !flashing;
 		}
-		delay(1000);
+		if (flashing) {
+			ledsToggle();
+			delay(1000);
+		}
 	}
 }
 
