@@ -1,5 +1,6 @@
 /*
- * @brief A program for the EA NXP LPC4088QSB to flash LED1, LED2, LED3 and LED4.
+ * @brief A program for the EA NXP LPC4088QSB to flash LED1, LED2, LED3 and LED4 if the
+ *        user push button is not pressed.
  * @author David Kendall
  * @date July 2015
  */
@@ -15,6 +16,10 @@
 #define LED3PIN    (1UL << 13)
 #define LED4PIN    (1UL << 19)
 
+#define BUTTON     (1UL << 10)
+
+bool buttonPressed(void);
+void ledsToggle(void);
 void delay(uint32_t ms);
 
 int main() {
@@ -22,21 +27,41 @@ int main() {
 	LPC_IOCON->P0_13 = 0x80; // Ensure digital mode is selected for type 'A' pin
 	LPC_IOCON->P1_13 = 0;
 	LPC_IOCON->P2_19 = 0;
+	LPC_IOCON->P2_10 = 0;
 	LPC_GPIO1->DIR |= LED1PIN;
 	LPC_GPIO0->DIR |= LED2PIN;
 	LPC_GPIO1->DIR |= LED3PIN;
 	LPC_GPIO2->DIR |= LED4PIN;
+	LPC_GPIO2->DIR &= ~BUTTON;
+	
 	while (true) {
+		if (!buttonPressed()) {
+		  ledsToggle();
+		}
+		delay(1000);
+	}
+}
+
+bool buttonPressed() {
+	return ((LPC_GPIO2->PIN & BUTTON) ? false : true);
+}
+
+void ledsToggle() {
+	static bool ledsOn = false;
+	
+	if (ledsOn) {
 		LPC_GPIO1->SET = LED1PIN;
 		LPC_GPIO0->SET = LED2PIN;
 		LPC_GPIO1->CLR = LED3PIN;
 		LPC_GPIO2->CLR = LED4PIN;
-		delay(1000);
+		ledsOn = false;
+	} 
+	else {
 		LPC_GPIO1->CLR = LED1PIN;
 		LPC_GPIO0->CLR = LED2PIN;
 		LPC_GPIO1->SET = LED3PIN;
 		LPC_GPIO2->SET = LED4PIN;
-		delay(1000);
+		ledsOn = true;
 	}
 }
 
