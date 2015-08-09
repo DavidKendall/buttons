@@ -39,8 +39,7 @@ int main() {
 	bool flashing3 = false;
 	bool flashing4 = false;
 
-	
-	LPC_IOCON->P1_18 = 0;
+	// Configure pins as GPIO
 	LPC_IOCON->P0_13 = 0x80; // Ensure digital mode is selected for type 'A' pin
 	LPC_IOCON->P1_13 = 0;
 	LPC_IOCON->P2_19 = 0;
@@ -50,10 +49,14 @@ int main() {
 	LPC_IOCON->P5_2 = 0;
 	LPC_IOCON->P5_3 = 0;
 	LPC_IOCON->P5_4 = 0;
+	
+	// Set LED pins as OUTPUT
 	LPC_GPIO1->DIR |= LED1PIN;
 	LPC_GPIO0->DIR |= LED2PIN;
 	LPC_GPIO1->DIR |= LED3PIN;
 	LPC_GPIO2->DIR |= LED4PIN;
+	
+	// Set joystick pins as INPUT
 	LPC_GPIO5->DIR &= ~(JOY_LEFT | JOY_DOWN | JOY_UP | JOY_CENTER | JOY_RIGHT);
 	
 	while (true) {
@@ -102,7 +105,7 @@ int main() {
 		if (flashing4) {
 			led4Toggle();
 		}
-		if (flashing1 | flashing2 | flashing3 | flashing4) {
+		if (flashing1 || flashing2 || flashing3 || flashing4) {
 			delay(1000);
 		}		
 	}
