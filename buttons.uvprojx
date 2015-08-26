@@ -417,6 +417,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\main.c</FilePath>
             </File>
+            <File>
+              <FileName>gpioPin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\gpioPin.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
