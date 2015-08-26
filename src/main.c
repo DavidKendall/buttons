@@ -18,10 +18,10 @@
 void delay(uint32_t ms);
 
 int main() {
-	LPC_IOCON->P1_18 = 0;
-	LPC_IOCON->P0_13 = 0x80; // Ensure digital mode is selected for type 'A' pin
-	LPC_IOCON->P1_13 = 0;
-	LPC_IOCON->P2_19 = 0;
+	LPC_IOCON->P1_18 &= ~0x1FUL;
+	LPC_IOCON->P0_13 &= ~0x1FUL;
+	LPC_IOCON->P1_13 &= ~0x1FUL;
+	LPC_IOCON->P2_19 &= ~0x1FUL;
 	LPC_GPIO1->DIR |= LED1PIN;
 	LPC_GPIO0->DIR |= LED2PIN;
 	LPC_GPIO1->DIR |= LED3PIN;
