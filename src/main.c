@@ -40,15 +40,15 @@ int main() {
 	bool flashing4 = false;
 
 	// Configure pins as GPIO
-	LPC_IOCON->P0_13 = 0x80; // Ensure digital mode is selected for type 'A' pin
-	LPC_IOCON->P1_13 = 0;
-	LPC_IOCON->P2_19 = 0;
-	LPC_IOCON->P2_10 = 0;
-	LPC_IOCON->P5_0 = 0;
-	LPC_IOCON->P5_1 = 0;
-	LPC_IOCON->P5_2 = 0;
-	LPC_IOCON->P5_3 = 0;
-	LPC_IOCON->P5_4 = 0;
+	LPC_IOCON->P0_13 &= 0x1FUL; 
+	LPC_IOCON->P1_13 &= 0x1FUL;
+	LPC_IOCON->P2_19 &= 0x1FUL;
+	LPC_IOCON->P2_10 &= 0x1FUL;
+	LPC_IOCON->P5_0 &= 0x1FUL;
+	LPC_IOCON->P5_1 &= 0x1FUL;
+	LPC_IOCON->P5_2 &= 0x1FUL;
+	LPC_IOCON->P5_3 &= 0x1FUL;
+	LPC_IOCON->P5_4 &= 0x1FUL;
 	
 	// Set LED pins as OUTPUT
 	LPC_GPIO1->DIR |= LED1PIN;
